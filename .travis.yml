@@ -1,0 +1,23 @@
+language: generic
+
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t kpkp00014/react-test-app -f ./frontend/Dockerfile.dev ./frontend
+
+script:
+  - docker run -e CI=true kpkp00014/react-test-app npm run test
+
+after_success:
+  - docker build -t kpkp00014/docker-frontend ./frontend
+  - docker build -t kpkp00014/docker-backend ./backend
+  - docker build -t kpkp00014/docker-nginx ./nginx
+
+  - echo "$DOCKER_HUB_PASSWORD" | docker login -u '$DOCKER_HUB_ID' --password-stdin
+
+  - docker push kpkp00014/docker-frontend
+  - docker push kpkp00014/docker-backend
+  - docker push kpkp00014/docker-nginx
