@@ -35,7 +35,7 @@ app.post("/api/value", function (req, res, next) {
     `INSERT INTO lists (value) VALUES("${req.body.value}")`,
     (err, results, fileds) => {
       if (err) {
-        console.log(err);
+        console.log("error occured : " + err);
         return res.status(500).send(err);
       } else return res.json({ success: true, value: req.body.value });
     }
