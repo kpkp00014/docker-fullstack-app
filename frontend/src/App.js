@@ -21,14 +21,15 @@ function App() {
 
   const submitHandler = (event) => {
     event.preventDefault();
-
     axios.post("/api/value", { value: value }).then((response) => {
+      console.log("/api/value requested");
       if (response.data.success) {
         console.log("response", response);
         setLists([...lists, response.data]);
         setValue("");
       } else {
-        alert("값을 DB에 넣는데 실패했습니다.");
+        setLists([...lists, "값을 DB에 넣는데 실패했습니다."]);
+        setValue("");
       }
     });
   };
